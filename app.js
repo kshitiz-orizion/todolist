@@ -21,7 +21,7 @@ mongoose.connect('mongodb://localhost/Todo');
 var assert = require('assert');
 
 var Todo = mongoose.model('Todo', mongoose.Schema({
-  number:{type:Number,unique:true},
+  number:{type:Number},
   task:String
 }));
 app.use(bodyParser.json()); 
