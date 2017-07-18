@@ -72,7 +72,21 @@ app.delete('/deletetodo/:id',function(req,res){
   });
 
 });
-
+app.put('/updatetodo/:id',function(req,res){
+    console.log("I recieved a update request");
+    MongoClient.connect(url,function(err,db){
+    
+    db.collection('Todo').findOneAndUpdate({id:req.params.id},{
+      $set:{task:req.body.task}
+    },{
+      new:true
+    },function(err,updatedtodo){
+      if(err) throw err;
+      res.json(updatedtodo);
+    }
+    );
+  });
+});
 app.listen(3000,function(err,data){
   if(err) throw err;
   else{
