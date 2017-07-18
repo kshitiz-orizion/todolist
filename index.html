@@ -43,11 +43,11 @@
           <form>
   			<div class="form-group">
    				 <label >Enter ID</label>
-    			<input type="text" class="form-control" placeholder="ID" name="id"  ng-required="required" ng-model="todo.id">
+    			<input type="text" class="form-control" placeholder="ID" name="id"  ng-required="required" ng-model="todo1.id">
   			</div>
   			<div class="form-group">
     			<label >Enter Task</label>
-    			<input type="text" class="form-control"  placeholder="TASK" name="task" ng-required="required" ng-model="todo.task">
+    			<input type="text" class="form-control"  placeholder="TASK" name="task" ng-required="required" ng-model="todo1.task">
   			</div>
   			
   			<button type="submit" name="submit" class="btn btn-default" value="POST" ng-click="submittodo()">Submit</button>
@@ -65,12 +65,15 @@
 <script type="text/javascript" src="bower_components/angular/angular.js"></script>	
 <script>
 	var app = angular.module('myApp', []);
+	app.config(['$qProvider', function ($qProvider) {
+    $qProvider.errorOnUnhandledRejections(false);
+}]);
 app.controller('myCtrl',['$scope','$window','$http','$location',function($scope, $window,$http,$location){
 
     $scope.submittodo=function(){
-        console.log($scope.todo);
-        $http.post('http://localhost:3000/posttodo',$scope.todo);
-            $window.location="#/"
+        console.log($scope.todo1);
+        $http.post('http://localhost:3000/posttodo',$scope.todo1);
+            $window.location.reload();
          alert('Task Added');
     };
 
