@@ -19,9 +19,12 @@ app.set('port',process.env.PORT||3000);
 app.set('views',__dirname+'views');
 app.set('view engine','jade');
 app.use(express.static(path.join(__dirname,'public')));
- 
-mongoose.connect('mongodb://localhost/Todo');
+var db=mongoose.connect('mongodb://localhost/Todo');
+
 var assert = require('assert');
+mongoose.connection.once('connected', function() {
+  console.log("Connected to database")
+});
 
 var Todo = mongoose.model('Todo', mongoose.Schema({
   number:Number,
@@ -33,20 +36,23 @@ app.use(bodyParser.urlencoded({
 }));
 app.get('/gettodo', function (req, res) {
     console.log('I received a GET request');
-    Todo.find(function(err, todo){
+    Todo.find({},function(err, todo){
     if(err)
       res.send(err);
     res.json(todo);
-  });
+  }).sort({number:1});
 });
 app.post('/posttodo', function(req, res) {
- Todo.create( req.body, function(err, todo){
-    if(err) throw err;
-    var token  = jwt.sign({_id:todo._id},jwtSecret);
-    console.log(token);
-        res.json({success:true, message:'token created', token:token});
+           Todo.create(req.body, function(err, todo){
+            if(err) throw err;
+            console.log(todo.number);
+            var token  = jwt.sign({_id:todo._id},jwtSecret);
+             console.log(token);
+             res.json({success:true, message:'token created', token:token});
+      
 
-  });
+      });
+
 });
 app.delete('/deletetodo/:id', function(req, res){
   Todo.findOneAndRemove({_id:req.params.id},function(err,todo){

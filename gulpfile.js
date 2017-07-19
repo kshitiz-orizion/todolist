@@ -29,7 +29,7 @@ var paths = {
 //  .pipe(gulp.dest(paths.dist));
 // });
 
-gulp.task('app',['build'], function(){
+gulp.task('app', function(){
   var options = {
     uri: 'http://localhost:3000',
   };

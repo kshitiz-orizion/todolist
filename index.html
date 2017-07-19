@@ -32,7 +32,7 @@
 	
 	<table>
 		<tr class="border">
-			<th>SERIAL NO</th>
+			<th>PRIORITY</th>
 			<th>TASK</th>
 			<th></th>
 			<th></th>
@@ -58,15 +58,15 @@
           <form ng-submit="updatetodo()">
           
   			<div class="form-group">
-   				 <label >Enter ID</label>
-    			<input type="text" class="form-control" placeholder="ID" name="id"  ng-required="true" ng-model="todo2.number">
+   				 <label >PRIORITY</label>
+    			<input type="text" class="form-control" placeholder="Enter Number(1 has highest priority)" name="id"  ng-required="true" ng-model="todo2.number">
   			</div>
   			<div class="form-group">
-    			<label >Enter Task</label>
+    			<label >TASK</label>
     			<input type="text" class="form-control"  placeholder="TASK" name="task" ng-required="true" ng-model="todo2.task">
   			</div>
   			
-  			<button type="submit" name="submit" class="btn btn-default" value="PUT">Submit</button>
+  			<button type="submit" name="submit" class="btn btn-default" value="PUT">SAVE</button>
   			
 		</form>
 	 	</div>
@@ -86,15 +86,15 @@
         <div class="modal-body">
           <form ng-submit="submittodo()">
   			<div class="form-group">
-   				 <label >Enter ID</label>
-    			<input type="text" class="form-control"  placeholder="ID" name="ID" ng-required="true" ng-model="todo1.number">
+   				 <label>PRIORITY</label>
+    			<input type="text" class="form-control"  placeholder="Enter Number(1 has highest priority)" name="ID" ng-required="true" ng-model="todo1.number">
   			</div>
   			<div class="form-group">
-    			<label >Enter Task</label>
+    			<label >TASK</label>
     			<input type="text" class="form-control"  placeholder="TASK" name="task" ng-required="true" ng-model="todo1.task">
   			</div>
   			
-  			<button type="submit" name="submit" class="btn btn-default" value="POST" >Submit</button>
+  			<button type="submit" name="submit" class="btn btn-default" value="POST" >SAVE</button>
 		</form>
         </div>
       </div>
