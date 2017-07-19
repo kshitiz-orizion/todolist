@@ -3,6 +3,9 @@ var express=require('express');
 var router=express.Router();
 var http=require('http');
 var CircularJSON = require('circular-json');
+var jwt=require('jsonwebtoken');
+var expressJwt=require('express-jwt');
+var jwtSecret = 'kjwdjs65$ikksop0982shj';
 var server=http.createServer();
 var path=require('path');
 var stringify = require('json-stringify-safe');
@@ -21,7 +24,7 @@ mongoose.connect('mongodb://localhost/Todo');
 var assert = require('assert');
 
 var Todo = mongoose.model('Todo', mongoose.Schema({
-  number:{type:Number},
+  number:Number,
   task:String
 }));
 app.use(bodyParser.json()); 
@@ -31,7 +34,6 @@ app.use(bodyParser.urlencoded({
 app.get('/gettodo', function (req, res) {
     console.log('I received a GET request');
     Todo.find(function(err, todo){
-      console.log(todo);
     if(err)
       res.send(err);
     res.json(todo);
@@ -39,9 +41,11 @@ app.get('/gettodo', function (req, res) {
 });
 app.post('/posttodo', function(req, res) {
  Todo.create( req.body, function(err, todo){
-    if(err)
-      res.send(err);
-    res.json(todo);
+    if(err) throw err;
+    var token  = jwt.sign({_id:todo._id},jwtSecret,{expiresIn:'24h'});
+    console.log(token);
+        res.json({success:true, message:'token created', token:token});
+
   });
 });
 app.delete('/deletetodo/:id', function(req, res){

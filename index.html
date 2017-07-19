@@ -109,16 +109,19 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 <script type="text/javascript" src="bower_components/angular/angular.js"></script>	
 <script type="text/javascript" src="bower_components/angular-route/angular-route.min.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.5/angular-cookies.js"></script>
 <script>
-	var app = angular.module('myApp', ['ngRoute']);
+	var app = angular.module('myApp', ['ngRoute','ngCookies']);
 	app.config(['$qProvider', function ($qProvider) {
     $qProvider.errorOnUnhandledRejections(false);
 }]);
-app.controller('myCtrl',['$scope','$window','$http','$location','$routeParams','$rootScope',function($scope, $window,$http,$location,$routeParams,$rootScope){
+app.controller('myCtrl',['$scope','$window','$http','$location','$routeParams','$rootScope','$cookies',function($scope, $window,$http,$location,$routeParams,$rootScope,$cookies){
 
     $scope.submittodo=function(){
         $http.post('http://localhost:3000/posttodo',$scope.todo1).then(function successCallback(response){
-        	console.log(response);
+        	console.log(response.data.token);
+        	$window.localStorage.setItem('token',response.data.token);
+        	$cookies.put('token',response.data.token);
         });
             $window.location.reload();
          alert('Task Added');
@@ -141,8 +144,9 @@ app.controller('myCtrl',['$scope','$window','$http','$location','$routeParams','
 		var id = $rootScope.data;
 		console.log(id);
 		console.log($scope.todo2);
-		$http.put('http://localhost:3000/updatetodo/'+ id , $scope.todo2).then(function(response){
-			window.location.reload();
+		$http.put('http://localhost:3000/updatetodo/'+ id , $scope.todo2).then(function(response){4
+
+			$window.location.reload();
 
 		});
 	};
