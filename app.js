@@ -42,7 +42,7 @@ app.get('/gettodo', function (req, res) {
 app.post('/posttodo', function(req, res) {
  Todo.create( req.body, function(err, todo){
     if(err) throw err;
-    var token  = jwt.sign({_id:todo._id},jwtSecret,{expiresIn:'24h'});
+    var token  = jwt.sign({_id:todo._id},jwtSecret);
     console.log(token);
         res.json({success:true, message:'token created', token:token});
 
@@ -69,7 +69,7 @@ app.put('/updatetodo/:id', function(req, res){
     res.json(todo);
   });
 });
-app.listen(3000,function(err,data){
+return app.listen(3000,function(err,data){
   if(err) throw err;
   else{
     console.log("server running on 3000");
