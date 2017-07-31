@@ -19,6 +19,7 @@ app.set('port',process.env.PORT||3000);
 app.set('views',__dirname+'views');
 app.set('view engine','jade');
 app.use(express.static(path.join(__dirname,'public')));
+ 
 var db=mongoose.connect('mongodb://localhost/Todo');
 
 var assert = require('assert');
@@ -28,7 +29,8 @@ mongoose.connection.once('connected', function() {
 
 var Todo = mongoose.model('Todo', mongoose.Schema({
   number:Number,
-  task:String
+  task:String,
+  description:String
 }));
 app.use(bodyParser.json()); 
 app.use(bodyParser.urlencoded({ 
@@ -42,6 +44,15 @@ app.get('/gettodo', function (req, res) {
     res.json(todo);
   }).sort({number:1});
 });
+app.get('/gettodo/:id', function (req, res) {
+    console.log('I received a SINGLE GET request');
+    Todo.findOne({_id:req.params.id},function(err, todo){
+        if(err)
+      res.send(err);
+    res.json(todo);
+    console.log(todo);
+  });
+});
 app.post('/posttodo', function(req, res) {
            Todo.create(req.body, function(err, todo){
             if(err) throw err;
@@ -49,10 +60,7 @@ app.post('/posttodo', function(req, res) {
             var token  = jwt.sign({_id:todo._id},jwtSecret);
              console.log(token);
              res.json({success:true, message:'token created', token:token});
-      
-
       });
-
 });
 app.delete('/deletetodo/:id', function(req, res){
   Todo.findOneAndRemove({_id:req.params.id},function(err,todo){
@@ -64,7 +72,8 @@ app.delete('/deletetodo/:id', function(req, res){
 app.put('/updatetodo/:id', function(req, res){
   var query = {
     number:req.body.number,
-    task:req.body.task
+    task:req.body.task,
+    description:req.body.description,
   };
   console.log(req.body.number);
   console.log(req.params.id);
